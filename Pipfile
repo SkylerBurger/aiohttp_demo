@@ -4,12 +4,17 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-quart = "*"
+Quart = "*"
 aiohttp = "*"
 feedparser = "*"
-hypercorn = "*"
+Hypercorn = "*"
+uWSGI = "*"
+pyopenssl = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.7"
+
+[packages.twisted]
+extras = [ "http2",]
