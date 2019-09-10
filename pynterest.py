@@ -1,5 +1,4 @@
-from quart import Quart
-from aiohttp import ClientSession
+from aiohttp import web, ClientSession
 import feedparser
 
 import asyncio
@@ -7,7 +6,9 @@ import json
 import time
 
 
-app = Quart(__name__)
+# Allows use of the @routes decorator
+routes = web.RouteTableDef()
+
 
 async def fetch(session, url):
     """
@@ -67,8 +68,8 @@ async def normalize_github(session, url, category):
     return normalized_entries
 
 
-@app.route('/')
-async def main():
+@routes.get('/')
+async def main(request):
     """
     Takes in a Request object from the client.
     Creates a ClientSession and coroutines for each API.
@@ -87,4 +88,12 @@ async def main():
 
     elapsed_time = time.perf_counter() - start_time
     print(f'Elapsed time: {elapsed_time:0.2f}')
-    return json.dumps(results)
+    return web.Response(text=json.dumps(results))
+
+
+# Instantiates an app and adds our routes
+app = web.Application()
+app.router.add_routes(routes)
+
+
+web.run_app(app)
