@@ -64,7 +64,7 @@ async def normalize_github(session, url, category):
     return normalized_entries
 
 
-async def main():
+def main():
     """
     Takes in a Request object from the client.
     Creates a ClientSession and coroutines for each API.
@@ -86,4 +86,4 @@ async def main():
     return web.Response(text=json.dumps(results))
 
 
-await main()
+main()
