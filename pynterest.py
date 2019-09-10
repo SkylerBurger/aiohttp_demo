@@ -1,4 +1,4 @@
-from quart import Quart
+from flask import Flask
 from aiohttp import ClientSession
 import feedparser
 
@@ -7,7 +7,7 @@ import json
 import time
 
 
-app = Quart(__name__)
+app = Flask(__name__)
 
 async def fetch(session, url):
     """

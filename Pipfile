@@ -10,6 +10,8 @@ feedparser = "*"
 Hypercorn = "*"
 uWSGI = "*"
 pyOpenSSL = "*"
+flask = "*"
+gunicorn = "*"
 
 [dev-packages]
 
