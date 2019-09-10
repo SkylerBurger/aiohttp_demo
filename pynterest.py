@@ -86,4 +86,4 @@ async def main():
     return web.Response(text=json.dumps(results))
 
 
-main()
+await main()
