@@ -90,3 +90,5 @@ def create_app():
             elapsed_time = time.perf_counter() - start_time
             print(f'Elapsed time: {elapsed_time:0.2f}')
             return json.dumps(results)
+
+    return app
