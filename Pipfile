@@ -9,12 +9,12 @@ aiohttp = "*"
 feedparser = "*"
 Hypercorn = "*"
 uWSGI = "*"
-pyopenssl = "*"
+pyOpenSSL = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.7"
 
-[packages.twisted]
+[packages.Twisted]
 extras = [ "http2",]
