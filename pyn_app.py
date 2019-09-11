@@ -1,5 +1,5 @@
 from aiohttp import web, ClientSession
-import argparse
+# import argparse
 
 import asyncio
 import time
@@ -69,29 +69,31 @@ app.add_routes(routes)
 # web.run_app(app, host='localhost', port=8000)
 
 
-def create_parser():
-    parser = argparse.ArgumentParser()
+# def create_parser():
+#     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--host", default="localhost", type=str)
-    parser.add_argument("--port", default=8000, type=int)
+#     parser.add_argument("--host", default="localhost", type=str)
+#     parser.add_argument("--port", default=8000, type=int)
 
-    return parser
+#     return parser
 
 
 def main():
-    parsed = create_parser().parse_args()
+    # parsed = create_parser().parse_args()
 
     async def start_async_app():
         runner = web.AppRunner(app_async)
         await runner.setup()
-        site = web.TCPSite(
-            runner, parsed.host, parsed.port)
-        await site.start()
-        print(f"Serving up app on {parsed.host}:{parsed.port}")
-        return runner, site
+        # site = web.TCPSite(
+        #     runner, parsed.host, parsed.port)
+        # await site.start()
+        # print(f"Serving up app on {parsed.host}:{parsed.port}")
+        # return runner, site
+        return runner
 
     loop = asyncio.get_event_loop()
-    runner, site = loop.run_until_complete(start_async_app())
+    # runner, site = loop.run_until_complete(start_async_app())
+    runner = loop.run_until_complete(start_async_app())
     try:
         loop.run_forever()
     except KeyboardInterrupt:

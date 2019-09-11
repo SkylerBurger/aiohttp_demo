@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 aiohttp = "*"
 gunicorn = "*"
-argparse = "*"
 
 [dev-packages]
 
