@@ -66,12 +66,15 @@ app.add_routes(routes)
 # Only for running this server locally by running this file
 # web.run_app(app, host='localhost', port=8000)
 
+
+
+
 async def start_app():
     runner = web.AppRunner(app)
     await runner.setup()
-    site = web.TCPSite(runner, parsed.host, parsed.port)
+    site = web.TCPSite(runner, 'localhost', 8000)
     await site.start()
-    print(f'**Your app is ready on {parsed.host}:{parsed.port}')
+    print(f'**Your app is ready on localhost:8000')
     return runner, site
 
 loop = asyncio.get_event_loop()
