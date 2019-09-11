@@ -1,5 +1,5 @@
 from aiohttp import web
 
-from .github import app as github
+from .api_fetch import app as api_fetch
 
-__all__ = ["github"]
+__all__ = ["api_fetch"]

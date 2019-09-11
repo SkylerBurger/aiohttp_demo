@@ -2,7 +2,7 @@ from aiohttp import web, ClientSession
 
 import asyncio
 
-from . import github
+from . import api_fetch
 
 def main():
     
