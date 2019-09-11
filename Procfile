@@ -1,1 +1,1 @@
-web: gunicorn app:github --worker-class aiohttp.GunicornWebWorker
+web: gunicorn github:app --worker-class aiohttp.GunicornWebWorker
