@@ -3,6 +3,7 @@ from aiohttp import web, ClientSession
 import asyncio
 import time
 import json
+import os
 
 
 routes = web.RouteTableDef()
@@ -72,7 +73,7 @@ app.add_routes(routes)
 async def start_app():
     runner = web.AppRunner(app)
     await runner.setup()
-    site = web.TCPSite(runner, 'localhost', 8000)
+    site = web.TCPSite(runner, os.environ['HOST'], os.environ['PORT'] or 3000)
     await site.start()
     print(f'**Your app is ready on localhost:8000')
     return runner, site
