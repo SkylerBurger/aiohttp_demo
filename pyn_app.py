@@ -75,7 +75,7 @@ async def start_app():
     return runner, site
 
 loop = asyncio.get_event_loop()
-runner, site = loop.run_until_complete(start_async_app())
+runner, site = loop.run_until_complete(start_app())
 try:
     loop.run_forever()
 except KeyboardInterrupt as err:
