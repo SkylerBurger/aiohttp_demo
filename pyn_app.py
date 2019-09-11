@@ -1,4 +1,5 @@
 from aiohttp import web, ClientSession
+import argparse
 
 import asyncio
 import time
@@ -68,19 +69,32 @@ app.add_routes(routes)
 # web.run_app(app, host='localhost', port=8000)
 
 
+def create_parser():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("--host", default="localhost", type=str)
+    parser.add_argument("--port", default=8000, type=int)
+
+    return parser
 
 
-async def start_app():
-    runner = web.AppRunner(app)
-    await runner.setup()
-    site = web.TCPSite(runner, os.environ.get('HOST', 'localhost'), os.environ['PORT'] or 80)
-    await site.start()
-    print(f'**Your app is ready on localhost:8000')
-    return runner, site
+def main():
+    parsed = create_parser().parse_args()
 
-loop = asyncio.get_event_loop()
-runner, site = loop.run_until_complete(start_app())
-try:
-    loop.run_forever()
-except KeyboardInterrupt as err:
-    loop.run_until_complete(runner.cleanup())
+    async def start_async_app():
+        runner = web.AppRunner(app_async)
+        await runner.setup()
+        site = web.TCPSite(
+            runner, parsed.host, parsed.port)
+        await site.start()
+        print(f"Serving up app on {parsed.host}:{parsed.port}")
+        return runner, site
+
+    loop = asyncio.get_event_loop()
+    runner, site = loop.run_until_complete(start_async_app())
+    try:
+        loop.run_forever()
+    except KeyboardInterrupt:
+        loop.run_until_complete(runner.cleanup())
+
+main()
