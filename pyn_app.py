@@ -1,13 +1,12 @@
-from quart import Quart
-from aiohttp import ClientSession
-import feedparser
+from aiohttp import web, ClientSession
 
 import asyncio
-import json
 import time
+import json
 
 
-app = Quart(__name__)
+routes = web.RouteTableDef()
+
 
 async def fetch(session, url):
     """
@@ -17,29 +16,6 @@ async def fetch(session, url):
     """
     async with session.get(url) as response:
         return await response.text()
-
-
-async def normalize_pypi(session, url, category):
-    """
-    Takes in a ClientSession and a URL string to PyPI.
-    Awaits a fetch coroutine, then normalizes the payload.
-    Returns the normalized entries.
-    """
-    print('url start', url)
-    feed_data = feedparser.parse(await fetch(session, url))
-    print('url done', url)
-    entries = feed_data.entries
-    normalized_entries = []
-    for entry in entries:
-        normalized_entries.append({
-            'source': 'pypi',
-            'category': category,
-            'title': entry['title'],
-            'link': entry['link'],
-            'desc': entry['summary']
-        })
-
-    return normalized_entries
 
 
 async def normalize_github(session, url, category):
@@ -67,24 +43,40 @@ async def normalize_github(session, url, category):
     return normalized_entries
 
 
-@app.route('/')
-async def main():
-    """
-    Takes in a Request object from the client.
-    Creates a ClientSession and coroutines for each API.
-    Awaits the normalized entries from the gathered coroutines.
-    Returns all of the normalized entries.
-    """
+@routes.get('/')
+async def get_github(request):
     start_time = time.perf_counter()
     entries = []
+
     async with ClientSession() as session:
         entries.append(normalize_github(session, 'https://api.github.com/search/repositories?q=language:python&sort=stars&order=desc', 'popular'))
         entries.append(normalize_github(session, 'https://api.github.com/search/repositories?q=language:python&sort=updated&order=desc', 'updated'))
-        entries.append(normalize_pypi(session, 'https://pypi.org/rss/updates.xml', 'updated'))
-        entries.append(normalize_pypi(session, 'https://pypi.org/rss/packages.xml', 'newest'))
 
         results = await asyncio.gather(*entries)
-
+    
     elapsed_time = time.perf_counter() - start_time
     print(f'Elapsed time: {elapsed_time:0.2f}')
-    return json.dumps(results)
+    return web.Response(text=json.dumps(results))
+
+
+app = web.Application()
+app.add_routes(routes)
+
+
+# Only for running this server locally by running this file
+# web.run_app(app, host='localhost', port=8000)
+
+async def start_app():
+    runner = web.AppRunner(app)
+    await runner.setup)_
+    site = web.TCPSite(runner, parsed.host, parsed.port)
+    await site.start()
+    print(f'**Your app is ready on {parsed.host}:{parsed.port}')
+    return runner, site
+
+loop = asyncio.get_event_loop()
+runner, site = loop.run_until_complete(start_async_app())
+try:
+    loop.run_forever()
+except KeyboardInterript as err:
+    loop.run_until_complete(runner.cleanup())

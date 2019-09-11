@@ -1,0 +1,1 @@
+web: gunicorn pyn_app:app --worker-class aiohttp.GunicornWebWorker
