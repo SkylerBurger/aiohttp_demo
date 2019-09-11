@@ -68,7 +68,7 @@ app.add_routes(routes)
 
 async def start_app():
     runner = web.AppRunner(app)
-    await runner.setup)_
+    await runner.setup()
     site = web.TCPSite(runner, parsed.host, parsed.port)
     await site.start()
     print(f'**Your app is ready on {parsed.host}:{parsed.port}')
@@ -78,5 +78,5 @@ loop = asyncio.get_event_loop()
 runner, site = loop.run_until_complete(start_async_app())
 try:
     loop.run_forever()
-except KeyboardInterript as err:
+except KeyboardInterrupt as err:
     loop.run_until_complete(runner.cleanup())
