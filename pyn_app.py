@@ -73,7 +73,7 @@ app.add_routes(routes)
 async def start_app():
     runner = web.AppRunner(app)
     await runner.setup()
-    site = web.TCPSite(runner, os.environ['HOST'], os.environ['PORT'] or 80)
+    site = web.TCPSite(runner, os.environ.get('HOST', 'localhost'), os.environ['PORT'] or 80)
     await site.start()
     print(f'**Your app is ready on localhost:8000')
     return runner, site
